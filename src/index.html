@@ -20,7 +20,24 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
-    <span class="loader"></span>
+    <section class="gallery-section">
+      <form class="search-form" autocomplete="off">
+        <input
+          class="search-input"
+          type="text"
+          name="query"
+          placeholder="Search images..."
+          required
+        />
+        <button class="search-btn" type="submit">Search</button>
+      </form>
+
+      <div class="loader-container">
+        <span class="loader"></span>
+      </div>
+
+      <ul class="gallery"></ul>
+    </section>
 
     <script type="module" src="./main.js"></script>
   </body>
