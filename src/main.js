@@ -15,12 +15,28 @@ const loader = document.querySelector('.loader');
 loader.style.display = 'none';
 form.addEventListener('submit', handleSearch);
 
+const refreshPage = new SimpleLightbox('.gallery a', {
+  captions: true,
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 function handleSearch(event) {
   event.preventDefault();
   gallery.innerHTML = '';
   loader.style.display = 'block';
 
-  const inputValue = input.value;
+  const inputValue = input.value.trim();
+  if (!inputValue) {
+    loader.style.display = 'none';
+    iziToast.error({
+      maxWidth: 432,
+      position: 'topRight',
+      title: 'Error',
+      message: 'Please enter a search query!',
+    });
+    return;
+  }
 
   fetchImages(inputValue)
     .then(data => {
@@ -34,17 +50,11 @@ function handleSearch(event) {
           message:
             'Sorry, there are no images matching your search query. Please try again!',
         });
+        return;
       }
 
-      gallery.innerHTML = ('beforeend', createMarkup(data.hits));
-
-      const refreshPage = new SimpleLightbox('.gallery a', {
-        captions: true,
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
+      gallery.innerHTML = createMarkup(data.hits);
       refreshPage.refresh();
-
       form.reset();
     })
     .catch(err => {
